@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hospital Appointment Form</title>
+<style>
+body {
+    margin: 0; padding: 0;
+    background-color: #add8e6;
+    font-family: Arial, sans-serif;
+}
+.card {
+    width: 480px;
+    background: white;
+    margin: 50px auto;
+    padding: 35px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+h1 { text-align: center; color: #00008B; font-size: 28px; margin-bottom: 8px; }
+h2 { text-align: center; color: #555; font-size: 18px; margin-bottom: 20px; }
+input, select, textarea, button {
+    width: 100%; margin-bottom: 22px;
+    padding: 10px; border-radius: 6px; border: 1px solid #ccc;
+    font-size: 16px; box-sizing: border-box;
+}
+textarea { resize: none; height: 60px; }
+button {
+    width: 70%; height: 45px; background-color: #00008B; color: white;
+    font-weight: bold; border-radius: 8px; border: none; cursor: pointer;
+    display: block; margin: 30px auto 0;
+}
+</style>
+</head>
+<body>
+<div class="card">
+<h1>Hospital Appointment Form</h1>
+<h2>Book Your Appointment</h2>
+<form id="appointmentForm">
+    <label>Patient Name *</label>
+    <input type="text" name="name" required>
+    
+    <label>Age *</label>
+    <input type="number" name="age" required>
+
+    <label>Symptoms *</label>
+    <input type="text" name="symptoms" required>
+
+    <label>Department (optional)</label>
+    <input type="text" name="department">
+
+    <label>Reason for Visit</label>
+    <textarea name="reason"></textarea>
+
+    <label>Preferred Date *</label>
+    <input type="date" name="date" required>
+
+    <label>Preferred Time *</label>
+    <input type="time" name="time" required>
+
+    <button type="submit">Confirm Appointment</button>
+</form>
+<div id="response" style="text-align:center;"></div>
+<script>
+const form = document.getElementById('appointmentForm');
+form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(form).entries());
+    const res = await fetch('/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    });
+    const text = await res.text();
+    document.getElementById('response').innerHTML = text;
+    form.reset();
+});
+</script>
+</div>
+</body>
+</html>
